@@ -6,7 +6,7 @@
 
 ---
 
-## 📁 Estructura del Proyecto
+##  Estructura del Proyecto
 
 ```
 plant_disease_svm/
@@ -38,7 +38,7 @@ plant_disease_svm/
 
 ---
 
-## 🧠 Explicación Teórica
+##  Explicación Teórica
 
 ### ¿Qué es un SVM (Support Vector Machine)?
 
@@ -90,7 +90,7 @@ Para **K clases**, scikit-learn entrena **K(K-1)/2** clasificadores binarios (On
 
 ### Ventajas y Limitaciones del SVM en este contexto
 
-| ✅ Ventajas | ⚠ Limitaciones |
+|  Ventajas |  Limitaciones |
 |------------|----------------|
 | Buen rendimiento con pocos datos | Lento en datasets muy grandes (>50k muestras) |
 | No requiere arquitectura compleja | No captura jerarquías espaciales como CNN |
@@ -100,7 +100,7 @@ Para **K clases**, scikit-learn entrena **K(K-1)/2** clasificadores binarios (On
 
 ---
 
-## 🔧 Instalación
+##  Instalación
 
 ### 1. Clonar / descargar el proyecto
 
@@ -129,7 +129,7 @@ pip install -r requirements.txt
 
 ---
 
-## 📥 Preparación del Dataset
+##  Preparación del Dataset
 
 ### Opción A – Imágenes sintéticas (prueba rápida)
 
@@ -170,7 +170,7 @@ dataset/
 
 ---
 
-## 🚀 Ejecución
+##  Ejecución
 
 ### Paso 1: Entrenar el modelo
 
@@ -216,7 +216,7 @@ python predict.py test_images/hoja.jpg
 
 ---
 
-## 📊 Resultados Esperados
+##  Resultados Esperados
 
 ### Accuracy (con imágenes reales PlantVillage)
 
@@ -262,7 +262,7 @@ Tomato_Septoria_Leaf_Spot       0.88    0.90      0.89      354
 
 ---
 
-## 🎯 Recomendaciones para Mejorar la Precisión
+##  Recomendaciones para Mejorar la Precisión
 
 ### 1. Características adicionales (Feature Engineering)
 
@@ -326,7 +326,7 @@ Para proyectos de mayor escala, considera:
 
 ---
 
-## 📚 Referencias
+##  Referencias
 
 - Mohanty, S.P. et al. (2016). *Using Deep Learning for Image-Based Plant Disease Detection*. Front. Plant Sci. 7:1419
 - Cortes, C. & Vapnik, V. (1995). *Support-vector networks*. Machine Learning, 20(3), 273-297.
@@ -335,13 +335,4 @@ Para proyectos de mayor escala, considera:
 
 ---
 
-## 👨‍💻 Notas para el Estudiante
 
-> **¿Por qué SVM y no una red neuronal?**  
-> El SVM es ideal para proyectos universitarios porque:
-> 1. No requiere GPU ni hardware especializado
-> 2. Entrena en minutos (vs. horas para CNNs)
-> 3. Es matemáticamente interpretable
-> 4. Produce resultados competitivos con datasets medianos
-> 
-> Para tu proyecto de tesis o industria, considera migrar a Transfer Learning con CNNs preentrenadas.
