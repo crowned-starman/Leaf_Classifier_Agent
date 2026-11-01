@@ -1,13 +1,13 @@
 """
-=============================================================================
+
   AGENTE DETECTOR DE ENFERMEDADES EN HOJAS DE PLANTAS - MÓDULO DE PREDICCIÓN
-=============================================================================
-Autor       : Proyecto Universitario - Visión Computacional
+
+Autor       : crowned-starman
 Descripción : Carga el modelo SVM entrenado y realiza predicciones sobre
               imágenes individuales de hojas de plantas.
 Uso         : python predict.py ruta/imagen.jpg
               python predict.py  (selección interactiva por consola)
-=============================================================================
+
 """
 
 import os
@@ -17,9 +17,6 @@ import cv2
 import matplotlib.pyplot as plt
 import joblib
 
-# ─────────────────────────────────────────────────────────────────────────────
-# PARÁMETROS (deben coincidir con los usados en train.py)
-# ─────────────────────────────────────────────────────────────────────────────
 IMG_SIZE   = 128
 MODEL_DIR  = "model"
 
@@ -31,9 +28,6 @@ COLORES_CONFIANZA = {
 }
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# SECCIÓN 1 – CARGA DEL MODELO
-# ─────────────────────────────────────────────────────────────────────────────
 
 def cargar_modelo():
     """
@@ -67,10 +61,6 @@ def cargar_modelo():
     return modelo, scaler, label_encoder, clases
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# SECCIÓN 2 – PREPROCESAMIENTO DE IMAGEN INDIVIDUAL
-# ─────────────────────────────────────────────────────────────────────────────
-
 def preprocesar_imagen(ruta_imagen: str, img_size: int = IMG_SIZE):
     """
     Aplica el mismo pipeline de preprocesamiento que se usó en entrenamiento:
@@ -99,10 +89,6 @@ def preprocesar_imagen(ruta_imagen: str, img_size: int = IMG_SIZE):
         print(f"\n  [ERROR] Procesando imagen: {e}")
         return None, None
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-# SECCIÓN 3 – PREDICCIÓN
-# ─────────────────────────────────────────────────────────────────────────────
 
 def predecir(vector, modelo, scaler, label_encoder):
     """
@@ -144,11 +130,6 @@ def nivel_confianza(confianza: float) -> tuple[str, str]:
     else:
         return "BAJA ✘",   COLORES_CONFIANZA["baja"]
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-# SECCIÓN 4 – VISUALIZACIÓN DE RESULTADOS
-# ─────────────────────────────────────────────────────────────────────────────
-
 def mostrar_resultado(imagen_rgb, clase, confianza, probabilidades,
                       ruta_imagen: str = ""):
     """
@@ -160,7 +141,7 @@ def mostrar_resultado(imagen_rgb, clase, confianza, probabilidades,
     fig, axes = plt.subplots(1, 2, figsize=(14, 6))
     fig.patch.set_facecolor("#f8f9fa")
 
-    # ── Panel izquierdo: imagen analizada ────────────────────────────────────
+    #Panel izquierdo: imagen analizada
     ax_img = axes[0]
     ax_img.imshow(imagen_rgb)
     ax_img.axis("off")
@@ -182,7 +163,7 @@ def mostrar_resultado(imagen_rgb, clase, confianza, probabilidades,
                   ec=color_nivel, lw=1.5)
     )
 
-    # ── Panel derecho: probabilidades por clase ───────────────────────────────
+    # Panel derecho: probabilidades por clase
     ax_bar = axes[1]
     clases_ordenadas = sorted(probabilidades.items(), key=lambda x: x[1], reverse=True)
     nombres = [c for c, _ in clases_ordenadas]
@@ -235,11 +216,6 @@ def imprimir_resultado_consola(clase, confianza, probabilidades):
         print(f"    {nombre:<35} {prob*100:5.1f}%  {barra}{marcador}")
 
     print("═"*55 + "\n")
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# PUNTO DE ENTRADA PRINCIPAL
-# ─────────────────────────────────────────────────────────────────────────────
 
 def predecir_imagen(ruta_imagen: str):
     """
