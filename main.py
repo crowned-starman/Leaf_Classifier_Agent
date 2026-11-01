@@ -1,13 +1,12 @@
 """
-=============================================================================
   AGENTE DETECTOR DE ENFERMEDADES EN HOJAS DE PLANTAS - INTERFAZ GRÁFICA
-=============================================================================
-Autor       : Proyecto Universitario - Visión Computacional
+  
+Autor       : crowned-starman
 Descripción : Interfaz gráfica con Tkinter para seleccionar imágenes de hojas
               y obtener el diagnóstico del modelo SVM entrenado.
 Uso         : python main.py
 Requiere    : Haber ejecutado train.py antes para generar el modelo.
-=============================================================================
+
 """
 
 import os
@@ -27,9 +26,6 @@ from predict import (
     nivel_confianza
 )
 
-# ─────────────────────────────────────────────────────────────────────────────
-# PALETA DE COLORES Y ESTILOS
-# ─────────────────────────────────────────────────────────────────────────────
 COLOR_BG         = "#1a1a2e"    # Fondo principal (azul muy oscuro)
 COLOR_PANEL      = "#16213e"    # Fondo de paneles
 COLOR_ACENTO     = "#0f3460"    # Acento azul
@@ -47,11 +43,6 @@ FUENTE_NORMAL    = ("Helvetica", 11)
 FUENTE_PEQUENA   = ("Helvetica", 9)
 
 PREVIEW_SIZE     = 300          # Tamaño del preview de imagen en px
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# CLASE PRINCIPAL DE LA INTERFAZ
-# ─────────────────────────────────────────────────────────────────────────────
 
 class AplicacionPlantDisease(tk.Tk):
     """
@@ -82,12 +73,10 @@ class AplicacionPlantDisease(tk.Tk):
         # Cargar modelo al iniciar (en hilo separado para no bloquear la UI)
         threading.Thread(target=self._cargar_modelo_async, daemon=True).start()
 
-    # ── CONSTRUCCIÓN DE LA INTERFAZ ──────────────────────────────────────────
 
     def _construir_ui(self):
         """Construye todos los widgets de la interfaz."""
 
-        # ── Encabezado ────────────────────────────────────────────────────────
         frame_header = tk.Frame(self, bg=COLOR_ACENTO, pady=15)
         frame_header.pack(fill="x")
 
@@ -107,7 +96,6 @@ class AplicacionPlantDisease(tk.Tk):
             fg=COLOR_TEXTO_SUB
         ).pack()
 
-        # ── Cuerpo principal ─────────────────────────────────────────────────
         frame_body = tk.Frame(self, bg=COLOR_BG, padx=20, pady=20)
         frame_body.pack(fill="both", expand=True)
 
@@ -172,7 +160,6 @@ class AplicacionPlantDisease(tk.Tk):
             bg=COLOR_PANEL, fg=COLOR_TEXTO
         ).pack(pady=(15, 10))
 
-        # ── Diagnóstico principal ─────────────────────────────────────────────
         self.frame_diagnostico = tk.Frame(frame_der, bg=COLOR_ACENTO,
                                            padx=10, pady=10)
         self.frame_diagnostico.pack(fill="x", padx=15, pady=(0, 10))
@@ -211,7 +198,6 @@ class AplicacionPlantDisease(tk.Tk):
         )
         self.lbl_confianza.pack()
 
-        # ── Tabla de probabilidades ────────────────────────────────────────────
         tk.Label(
             frame_der,
             text="Probabilidades por clase:",
@@ -244,7 +230,6 @@ class AplicacionPlantDisease(tk.Tk):
         self.canvas_probs.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
 
-        # ── Estado del modelo ─────────────────────────────────────────────────
         self.lbl_estado = tk.Label(
             self,
             text="⏳ Cargando modelo...",
@@ -292,7 +277,6 @@ class AplicacionPlantDisease(tk.Tk):
             justify="center"
         )
 
-    # ── LÓGICA DE NEGOCIO ─────────────────────────────────────────────────────
 
     def _cargar_modelo_async(self):
         """Carga el modelo en un hilo secundario para no bloquear la UI."""
@@ -506,10 +490,6 @@ class AplicacionPlantDisease(tk.Tk):
             text="🔍  Analizar Imagen"
         )
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-# PUNTO DE ENTRADA PRINCIPAL
-# ─────────────────────────────────────────────────────────────────────────────
 
 def main():
     """Inicia la aplicación de escritorio."""
