@@ -1,7 +1,7 @@
 """
-=============================================================================
+
   AGENTE DETECTOR DE ENFERMEDADES – DESCARGA Y CONFIGURACIÓN DEL DATASET
-=============================================================================
+  
 Descripción : Script auxiliar para descargar el dataset PlantVillage y
               preparar la estructura de carpetas requerida por el proyecto.
 
@@ -10,7 +10,7 @@ OPCIONES:
   2. Generación de dataset DEMO con imágenes sintéticas (para pruebas rápidas)
 
 Uso: python setup_dataset.py
-=============================================================================
+
 """
 
 import os
@@ -19,10 +19,6 @@ import random
 import numpy as np
 import cv2
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-# CONFIGURACIÓN
-# ─────────────────────────────────────────────────────────────────────────────
 
 DATASET_DIR = "dataset"
 
@@ -35,9 +31,6 @@ CLASES = [
     "Tomato_Septoria_Leaf_Spot",
 ]
 
-# ─────────────────────────────────────────────────────────────────────────────
-# GENERADOR DE DATASET DEMO (imágenes sintéticas con texturas realistas)
-# ─────────────────────────────────────────────────────────────────────────────
 
 # Características visuales aproximadas por enfermedad
 PERFILES_VISUALES = {
@@ -174,10 +167,6 @@ def crear_dataset_demo(n_por_clase: int = 80):
     print("\n  Ahora ejecuta:  python train.py\n")
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# DESCARGA VIA KAGGLE API
-# ─────────────────────────────────────────────────────────────────────────────
-
 def descargar_plantvillage_kaggle():
     """
     Descarga el dataset PlantVillage desde Kaggle.
@@ -201,10 +190,6 @@ def descargar_plantvillage_kaggle():
     print("  ✔ Descarga completada.")
     return True
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-# MENÚ INTERACTIVO
-# ─────────────────────────────────────────────────────────────────────────────
 
 def main():
     print("\n" + "═" * 60)
