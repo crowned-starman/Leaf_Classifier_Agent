@@ -1,12 +1,12 @@
 """
-=============================================================================
+
   AGENTE DETECTOR DE ENFERMEDADES EN HOJAS DE PLANTAS - MÓDULO DE ENTRENAMIENTO
-=============================================================================
+  
 Autor       : Proyecto Universitario - Visión Computacional
 Descripción : Entrena un modelo SVM multiclase para clasificar enfermedades
               en hojas de plantas usando imágenes del dataset PlantVillage.
 Dependencias: opencv-python, numpy, scikit-learn, matplotlib, joblib
-=============================================================================
+
 """
 
 import os
@@ -29,28 +29,15 @@ from sklearn.metrics import (
 
 warnings.filterwarnings("ignore")
 
-# ─────────────────────────────────────────────────────────────────────────────
-# PARÁMETROS GLOBALES
-# ─────────────────────────────────────────────────────────────────────────────
-IMG_SIZE      = 128          # Tamaño al que se redimensionan todas las imágenes
-TEST_SIZE     = 0.20         # 20 % para prueba, 80 % para entrenamiento
-RANDOM_STATE  = 42           # Semilla para reproducibilidad
-DATASET_PATH  = "dataset"    # Ruta a la carpeta con las imágenes
-MODEL_DIR     = "model"      # Carpeta donde se guarda el modelo entrenado
-EXTENSIONS    = (".jpg", ".jpeg", ".png", ".bmp")  # Formatos aceptados
+IMG_SIZE      = 128
+TEST_SIZE     = 0.20         
+RANDOM_STATE  = 42        
+DATASET_PATH  = "dataset"   
+MODEL_DIR     = "model"
+EXTENSIONS    = (".jpg", ".jpeg", ".png", ".bmp")
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-# SECCIÓN 1 – CARGA DEL DATASET
-# ─────────────────────────────────────────────────────────────────────────────
 
 def cargar_dataset(ruta_dataset: str, img_size: int = IMG_SIZE):
-    """
-    Recorre las subcarpetas de `ruta_dataset`. Cada subcarpeta es una clase.
-    Retorna:
-        imagenes  (np.ndarray) – arreglo de vectores de píxeles normalizados
-        etiquetas (list[str])  – nombre de clase para cada imagen
-    """
     imagenes  = []
     etiquetas = []
     clases_encontradas = []
@@ -108,30 +95,16 @@ def cargar_dataset(ruta_dataset: str, img_size: int = IMG_SIZE):
 
     return np.array(imagenes), etiquetas, clases_encontradas
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-# SECCIÓN 2 – PREPROCESAMIENTO
-# ─────────────────────────────────────────────────────────────────────────────
-
 def leer_y_preprocesar(ruta_imagen: str, img_size: int = IMG_SIZE):
-    """
-    Lee una imagen, la convierte a RGB, la redimensiona y la normaliza.
-    Retorna un vector 1-D (flatten) o None si hay error de lectura.
-
-    Por qué normalizamos:
-        Los píxeles van de 0-255. Al dividir entre 255.0 los llevamos a [0,1].
-        Esto evita que los valores grandes dominen el margen del SVM y
-        acelera la convergencia del optimizador.
-    """
     try:
         img = cv2.imread(ruta_imagen)
         if img is None:
             raise IOError(f"No se pudo leer: {ruta_imagen}")
 
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)          # BGR → RGB
-        img = cv2.resize(img, (img_size, img_size))          # Redimensionar
-        img = img.astype(np.float32) / 255.0                 # Normalizar [0,1]
-        return img.flatten()                                  # Aplanar a vector
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img = cv2.resize(img, (img_size, img_size))
+        img = img.astype(np.float32) / 255.0
+        return img.flatten()
 
     except Exception as e:
         print(f"  [ERROR] {ruta_imagen}: {e}")
@@ -159,11 +132,6 @@ def escalar_caracteristicas(X_train, X_test):
     X_test  = scaler.transform(X_test)        # Solo transforma prueba
     return scaler, X_train, X_test
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-# SECCIÓN 3 – ENTRENAMIENTO DEL MODELO SVM
-# ─────────────────────────────────────────────────────────────────────────────
-
 def entrenar_svm(X_train, y_train, kernel: str = "rbf"):
     """
     Entrena un SVM multiclase con estrategia One-vs-One (OvO).
@@ -172,11 +140,6 @@ def entrenar_svm(X_train, y_train, kernel: str = "rbf"):
         C      : Parámetro de regularización (penalización de errores)
         gamma  : Solo para RBF – controla la influencia de cada muestra
         probability=True permite obtener puntuaciones de confianza
-
-    Por qué RBF:
-        El kernel RBF transforma el espacio de características a una dimensión
-        mayor donde las clases son linealmente separables, sin necesidad de
-        calcular explícitamente esa transformación (truco del kernel).
     """
     print(f"\n{'═'*60}")
     print(f"  ENTRENANDO MODELO SVM  |  kernel={kernel.upper()}")
@@ -197,15 +160,11 @@ def entrenar_svm(X_train, y_train, kernel: str = "rbf"):
     modelo.fit(X_train, y_train)
     t1 = time.time()
 
-    print(f"  ✔ Entrenamiento completado en {t1 - t0:.2f} segundos")
+    print(f"  Entrenamiento completado en {t1 - t0:.2f} segundos")
     print(f"{'═'*60}\n")
 
     return modelo
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-# SECCIÓN 4 – EVALUACIÓN
-# ─────────────────────────────────────────────────────────────────────────────
 
 def evaluar_modelo(modelo, X_test, y_test, label_encoder, clases):
     """
@@ -241,7 +200,7 @@ def graficar_matriz_confusion(cm, clases: list, guardar: bool = True):
         os.makedirs(MODEL_DIR, exist_ok=True)
         ruta = os.path.join(MODEL_DIR, "confusion_matrix.png")
         plt.savefig(ruta, dpi=150, bbox_inches="tight")
-        print(f"  ✔ Matriz guardada en: {ruta}")
+        print(f"  Matriz guardada en: {ruta}")
 
     plt.show()
 
@@ -263,14 +222,10 @@ def graficar_distribucion_clases(etiquetas: list, guardar: bool = True):
         os.makedirs(MODEL_DIR, exist_ok=True)
         ruta = os.path.join(MODEL_DIR, "class_distribution.png")
         plt.savefig(ruta, dpi=150, bbox_inches="tight")
-        print(f"  ✔ Distribución guardada en: {ruta}")
+        print(f"  Distribución guardada en: {ruta}")
 
     plt.show()
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-# SECCIÓN 5 – GUARDADO DEL MODELO
-# ─────────────────────────────────────────────────────────────────────────────
 
 def guardar_modelo(modelo, scaler, label_encoder, clases: list):
     """
@@ -293,27 +248,18 @@ def guardar_modelo(modelo, scaler, label_encoder, clases: list):
     print(f"  • classes.pkl        – Lista de clases")
     print(f"{'═'*60}\n")
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-# PUNTO DE ENTRADA PRINCIPAL
-# ─────────────────────────────────────────────────────────────────────────────
-
 def main():
     print("\n" + "═"*60)
     print("   AGENTE DETECTOR DE ENFERMEDADES EN HOJAS DE PLANTAS")
     print("   Modelo: Support Vector Machine (SVM)")
     print("═"*60)
 
-    # 1. Carga del dataset
     X_raw, etiquetas, clases = cargar_dataset(DATASET_PATH)
 
-    # 2. Visualizar distribución
     graficar_distribucion_clases(etiquetas)
 
-    # 3. Codificación de etiquetas
     label_encoder, y = codificar_etiquetas(etiquetas)
 
-    # 4. División train/test con estratificación
     X_train, X_test, y_train, y_test = train_test_split(
         X_raw, y,
         test_size    = TEST_SIZE,
@@ -324,22 +270,17 @@ def main():
     print(f"    Entrenamiento : {X_train.shape[0]} muestras")
     print(f"    Prueba        : {X_test.shape[0]} muestras\n")
 
-    # 5. Escalado de características
     scaler, X_train, X_test = escalar_caracteristicas(X_train, X_test)
 
-    # 6. Entrenamiento del SVM
     modelo = entrenar_svm(X_train, y_train, kernel="rbf")
 
-    # 7. Evaluación
     acc, cm, _ = evaluar_modelo(modelo, X_test, y_test, label_encoder, clases)
 
-    # 8. Gráficas
     graficar_matriz_confusion(cm, clases)
-
-    # 9. Guardar modelo
+    
     guardar_modelo(modelo, scaler, label_encoder, clases)
 
-    print(f"  ✔ Proceso completado. Accuracy: {acc * 100:.2f}%")
+    print(f" Proceso completado. Accuracy: {acc * 100:.2f}%")
     print("  Ahora puedes ejecutar: python predict.py  o  python main.py\n")
 
 
