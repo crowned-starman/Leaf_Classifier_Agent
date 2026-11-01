@@ -2,7 +2,7 @@
 
   AGENTE DETECTOR DE ENFERMEDADES EN HOJAS DE PLANTAS - MÓDULO DE ENTRENAMIENTO
   
-Autor       : Proyecto Universitario - Visión Computacional
+Autor       : crowned-starman
 Descripción : Entrena un modelo SVM multiclase para clasificar enfermedades
               en hojas de plantas usando imágenes del dataset PlantVillage.
 Dependencias: opencv-python, numpy, scikit-learn, matplotlib, joblib
