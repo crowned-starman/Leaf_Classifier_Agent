@@ -1,6 +1,6 @@
-# ============================================================
+
 #  AGENTE DETECTOR DE ENFERMEDADES EN PLANTAS - DEPENDENCIAS
-# ============================================================
+
 # Instalar con:  pip install -r requirements.txt
 
 # Visión Computacional
